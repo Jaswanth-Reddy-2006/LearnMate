@@ -44,78 +44,82 @@ const OnboardingPage = () => {
     try {
       const session = await api.createSession(values.subject)
       setSession(session)
-      navigate('/dashboard')
+      navigate('/agent')
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-surface via-slate-950 to-black px-4 py-10">
-      <Card className="w-full max-w-4xl bg-slate-900/50">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-navy-50 via-navy-100 to-navy-200 px-4 py-10 text-white">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+      </div>
+      <Card className="w-full max-w-4xl bg-gradient-to-br from-navy-300/40 to-navy-400/40 border border-blue-400/20 relative z-10">
         <div className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <Badge>Adaptive onboarding</Badge>
+            <Badge className="bg-blue-500/20 text-blue-200 border-blue-400/30">Adaptive onboarding</Badge>
             <h2 className="mt-4 text-3xl font-bold text-white">Tell LearnMate how you like to learn.</h2>
-            <p className="mt-2 max-w-2xl text-sm text-slate-400">
+            <p className="mt-2 max-w-2xl text-sm text-blue-100/70">
               The coordinator agent will orchestrate lesson planning, teaching, emotion feedback, and quizzes tuned to your preferences.
             </p>
           </div>
-          <div className="rounded-2xl border border-primary/20 bg-primary/10 px-6 py-4 text-right">
-            <p className="text-sm uppercase tracking-wide text-primary">Live session orchestration</p>
+          <div className="rounded-2xl border border-blue-400/30 bg-blue-500/10 px-6 py-4 text-right">
+            <p className="text-sm uppercase tracking-wide text-blue-300">Live session orchestration</p>
             <p className="text-2xl font-semibold text-white">Ready in under 5 seconds</p>
           </div>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 lg:grid-cols-2">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-200">Focus subject</label>
+            <label className="block text-sm font-medium text-blue-100">Focus subject</label>
             <input
               {...register('subject')}
-              className="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 focus:border-primary focus:outline-none"
+              className="w-full rounded-xl border border-blue-400/30 bg-navy-400/30 px-4 py-3 text-sm text-white placeholder:text-blue-100/50 focus:border-blue-400/50 focus:outline-none"
             />
-            {errors.subject && <p className="text-xs text-accent">{errors.subject.message}</p>}
+            {errors.subject && <p className="text-xs text-red-300">{errors.subject.message}</p>}
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-200">Target timeframe</label>
+            <label className="block text-sm font-medium text-blue-100">Target timeframe</label>
             <select
               {...register('timeframe')}
-              className="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 focus:border-primary focus:outline-none"
+              className="w-full rounded-xl border border-blue-400/30 bg-navy-400/30 px-4 py-3 text-sm text-white focus:border-blue-400/50 focus:outline-none"
             >
               <option value="1 week">1 week</option>
               <option value="2 weeks">2 weeks</option>
               <option value="1 month">1 month</option>
               <option value="custom">Custom</option>
             </select>
-            {errors.timeframe && <p className="text-xs text-accent">{errors.timeframe.message}</p>}
+            {errors.timeframe && <p className="text-xs text-red-300">{errors.timeframe.message}</p>}
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-200">Daily commitment (minutes)</label>
+            <label className="block text-sm font-medium text-blue-100">Daily commitment (minutes)</label>
             <input
               type="number"
               {...register('dailyMinutes', { valueAsNumber: true })}
-              className="w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 focus:border-primary focus:outline-none"
+              className="w-full rounded-xl border border-blue-400/30 bg-navy-400/30 px-4 py-3 text-sm text-white placeholder:text-blue-100/50 focus:border-blue-400/50 focus:outline-none"
             />
-            {errors.dailyMinutes && <p className="text-xs text-accent">{errors.dailyMinutes.message}</p>}
+            {errors.dailyMinutes && <p className="text-xs text-red-300">{errors.dailyMinutes.message}</p>}
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-slate-200">Preferred learning style</label>
+            <label className="block text-sm font-medium text-blue-100">Preferred learning style</label>
             <div className="grid grid-cols-3 gap-3">
               <ModeButton value="visual" register={register} name="mode" label="Visual" />
               <ModeButton value="auditory" register={register} name="mode" label="Auditory" />
               <ModeButton value="kinesthetic" register={register} name="mode" label="Hands-on" />
             </div>
-            {errors.mode && <p className="text-xs text-accent">{errors.mode.message}</p>}
+            {errors.mode && <p className="text-xs text-red-300">{errors.mode.message}</p>}
           </div>
           <div className="lg:col-span-2">
-            <label className="block text-sm font-medium text-slate-200">What do you want to achieve?</label>
+            <label className="block text-sm font-medium text-blue-100">What do you want to achieve?</label>
             <textarea
               {...register('goal')}
               rows={4}
-              className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-slate-100 focus:border-primary focus:outline-none"
+              className="mt-2 w-full rounded-xl border border-blue-400/30 bg-navy-400/30 px-4 py-3 text-sm text-white placeholder:text-blue-100/50 focus:border-blue-400/50 focus:outline-none"
             />
-            {errors.goal && <p className="text-xs text-accent">{errors.goal.message}</p>}
+            {errors.goal && <p className="text-xs text-red-300">{errors.goal.message}</p>}
           </div>
-          <Button type="submit" isLoading={loading} className="lg:col-span-2">
+          <Button type="submit" isLoading={loading} className="lg:col-span-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500">
             {loading ? 'Orchestrating session...' : 'Launch personalised plan'}
           </Button>
         </form>
@@ -134,7 +138,7 @@ type ModeButtonProps = {
 const ModeButton = ({ value, register, name, label }: ModeButtonProps) => (
   <label className="cursor-pointer">
     <input type="radio" value={value} className="peer hidden" {...register(name)} />
-    <div className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-center text-sm text-slate-300 transition peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-white">
+    <div className="rounded-xl border border-blue-400/30 bg-navy-400/30 px-4 py-3 text-center text-sm text-blue-100/70 transition peer-checked:border-blue-400/60 peer-checked:bg-blue-500/20 peer-checked:text-white">
       {label}
     </div>
   </label>
