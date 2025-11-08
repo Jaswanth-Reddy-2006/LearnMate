@@ -1,4 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
+import WelcomePage from '../pages/WelcomePage'
+import InteractiveSessionPage from '../pages/InteractiveSessionPage'
 import LandingPage from '../pages/LandingPage'
 import DashboardPage from '../pages/DashboardPage'
 import CatalogPage from '../pages/CatalogPage'
@@ -15,8 +17,10 @@ import NotFoundPage from '../pages/NotFoundPage'
 const AppRouter = () => {
   return (
     <Routes>
-      <Route index element={<LandingPage />} />
+      <Route index element={<WelcomePage />} />
+      <Route path="session" element={<InteractiveSessionPage />} />
       <Route path="onboarding" element={<OnboardingPage />} />
+      <Route path="agent" element={<LandingPage />} />
       <Route element={<MainLayout />}>
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="catalog" element={<CatalogPage />} />
