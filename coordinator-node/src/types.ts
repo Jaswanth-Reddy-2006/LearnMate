@@ -99,6 +99,8 @@ export type PeerVideo = {
   status: 'published' | 'pending' | 'flagged'
   lessonId: string
   submittedAt: string
+  topic: string
+  subtopic: string
 }
 
 export type ModerationItem = {

@@ -105,6 +105,8 @@ export type PeerVideo = {
   likes: number
   status: 'published' | 'pending' | 'flagged'
   submittedAt: string
+  topic: string
+  subtopic: string
 }
 
 export type ProgressSnapshot = {
