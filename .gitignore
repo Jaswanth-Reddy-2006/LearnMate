@@ -1,0 +1,11 @@
+node_modules/
+frontend/node_modules/
+coordinator-node/node_modules/
+coordinator-node/dist/
+coordinator-node/uploads/
+progress-fastapi/__pycache__/
+progress-fastapi/app/__pycache__/
+progress-fastapi/.venv/
+.env
+frontend/.env
+coordinator-node/.env

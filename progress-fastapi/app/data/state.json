@@ -1,0 +1,20 @@
+{
+  "mastery": 62.0,
+  "streak": 4,
+  "next_review_at": "2025-11-08T12:00:00Z",
+  "lesson_completion_rate": 78.0,
+  "skills": [
+    {"id": "loops", "label": "Loops", "level": 68.0, "trend": "up"},
+    {"id": "recursion", "label": "Recursion", "level": 54.0, "trend": "steady"},
+    {"id": "structures", "label": "Data Structures", "level": 49.0, "trend": "up"}
+  ],
+  "mastery_trend": [
+    {"date": "2025-11-02", "value": 52.0},
+    {"date": "2025-11-03", "value": 54.0},
+    {"date": "2025-11-04", "value": 55.0},
+    {"date": "2025-11-05", "value": 57.0},
+    {"date": "2025-11-06", "value": 59.0},
+    {"date": "2025-11-07", "value": 60.0},
+    {"date": "2025-11-08", "value": 62.0}
+  ]
+}
