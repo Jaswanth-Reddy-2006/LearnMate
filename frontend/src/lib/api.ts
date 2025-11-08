@@ -2,6 +2,7 @@ import axios from 'axios'
 import { config } from './config'
 import type {
   AgentMessagePayload,
+  AgentResponse,
   CatalogItem,
   LessonContent,
   LessonPlan,
@@ -49,7 +50,7 @@ export const api = {
     return data
   },
   dispatchAgent: async (message: AgentMessagePayload) => {
-    const { data } = await coordinatorClient.post('/message', message)
+    const { data } = await coordinatorClient.post<AgentResponse>('/message', message)
     return data
   },
   getQuiz: async (lessonId: string) => {

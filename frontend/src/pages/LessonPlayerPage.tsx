@@ -9,7 +9,7 @@ import { motion } from 'framer-motion'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import Badge from '../components/ui/Badge'
-import { api, progressApi } from '../lib/api'
+import { api } from '../lib/api'
 import { useSessionState } from '../hooks/sessionState'
 
 const LessonPlayerPage = () => {
@@ -34,7 +34,7 @@ const LessonPlayerPage = () => {
         payload: { code, lessonId },
       }),
     onSuccess: (data) => {
-      setFeedback(data.feedback)
+      setFeedback(data.feedback ?? null)
     },
   })
 

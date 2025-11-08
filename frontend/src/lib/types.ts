@@ -69,6 +69,23 @@ export type CatalogItem = {
   lastUpdated: string
 }
 
+export type ChatRecommendation = {
+  id: string
+  title: string
+  description: string
+  difficulty: CatalogItem['difficulty']
+  duration: number
+  tags: string[]
+}
+
+export type AgentResponse = {
+  agent: string
+  reply?: string
+  feedback?: string
+  suggestions?: string[]
+  recommendations?: ChatRecommendation[]
+}
+
 export type PeerVideo = {
   id: string
   title: string
