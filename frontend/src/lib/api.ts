@@ -53,8 +53,18 @@ export const api = {
     const { data } = await coordinatorClient.post<AgentResponse>('/message', message)
     return data
   },
-  getQuiz: async (lessonId: string) => {
-    const { data } = await coordinatorClient.get<QuizItem[]>(`/quiz/${lessonId}`)
+  getQuiz: async (lessonId: string, config?: { numQuestions?: number; level?: string; easy?: number; medium?: number; hard?: number; mode?: string }) => {
+    let params = ''
+    if (config) {
+      if (config.mode === 'practice') {
+        params = '?mode=practice'
+      } else if (config.mode === 'quiz') {
+        params = `?mode=quiz&numQuestions=${config.numQuestions}&level=${config.level}`
+      } else if (config.easy !== undefined) {
+        params = `?easy=${config.easy}&medium=${config.medium}&hard=${config.hard}`
+      }
+    }
+    const { data } = await coordinatorClient.get<QuizItem[]>(`/quiz/${lessonId}${params}`)
     return data
   },
   submitQuiz: async (submission: QuizSubmission) => {

@@ -15,6 +15,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'loop-fundamentals',
     submittedAt: new Date().toISOString(),
+    topic: 'Programming',
+    subtopic: 'Python Basics',
   },
   {
     id: 'video-002',
@@ -30,6 +32,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'recursion-visual',
     submittedAt: new Date().toISOString(),
+    topic: 'Programming',
+    subtopic: 'Algorithms',
   },
   {
     id: 'video-003',
@@ -45,6 +49,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'python-async-patterns',
     submittedAt: new Date().toISOString(),
+    topic: 'Programming',
+    subtopic: 'Advanced Python',
   },
   {
     id: 'video-004',
@@ -60,6 +66,8 @@ export const videos: PeerVideo[] = [
     status: 'pending',
     lessonId: 'api-design-patterns',
     submittedAt: new Date().toISOString(),
+    topic: 'Software Design',
+    subtopic: 'API Design',
   },
   {
     id: 'video-005',
@@ -75,6 +83,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'communication-for-devs',
     submittedAt: new Date().toISOString(),
+    topic: 'Professional Skills',
+    subtopic: 'Communication',
   },
   {
     id: 'video-006',
@@ -90,6 +100,8 @@ export const videos: PeerVideo[] = [
     status: 'flagged',
     lessonId: 'security-basics',
     submittedAt: new Date().toISOString(),
+    topic: 'Security',
+    subtopic: 'Credential Management',
   },
   {
     id: 'video-007',
@@ -105,6 +117,8 @@ export const videos: PeerVideo[] = [
     status: 'pending',
     lessonId: 'tailwind-design-systems',
     submittedAt: new Date().toISOString(),
+    topic: 'Frontend',
+    subtopic: 'UI/CSS',
   },
   {
     id: 'video-008',
@@ -120,6 +134,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'sql-window-functions',
     submittedAt: new Date().toISOString(),
+    topic: 'Databases',
+    subtopic: 'SQL',
   },
   {
     id: 'video-009',
@@ -135,6 +151,8 @@ export const videos: PeerVideo[] = [
     status: 'pending',
     lessonId: 'devops-observability',
     submittedAt: new Date().toISOString(),
+    topic: 'DevOps',
+    subtopic: 'Observability',
   },
   {
     id: 'video-010',
@@ -150,6 +168,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'ai-ethics-safeguards',
     submittedAt: new Date().toISOString(),
+    topic: 'AI/ML',
+    subtopic: 'Ethics',
   },
   {
     id: 'video-011',
@@ -165,6 +185,8 @@ export const videos: PeerVideo[] = [
     status: 'published',
     lessonId: 'mobile-architecture-patterns',
     submittedAt: new Date().toISOString(),
+    topic: 'Mobile',
+    subtopic: 'Architecture',
   },
   {
     id: 'video-012',
@@ -180,5 +202,7 @@ export const videos: PeerVideo[] = [
     status: 'pending',
     lessonId: 'communication-for-devs',
     submittedAt: new Date().toISOString(),
+    topic: 'Professional Skills',
+    subtopic: 'Leadership',
   },
 ]

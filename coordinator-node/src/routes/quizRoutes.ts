@@ -1,14 +1,71 @@
 import { Router } from 'express'
 import { z } from 'zod'
-import { quizzes } from '../data/quizzes'
+import { catalog } from '../data/catalog'
+import { quizzes } from '../data/quizzes' // Keep as fallback
+import { WikipediaFetcher } from '../utils/wikipediaFetcher'
+import { QuizGenerator } from '../utils/quizGenerator'
+import { Cache } from '../utils/cache'
 import type { QuizItem, QuizResult } from '../types'
 
 const router = Router()
 
-router.get('/quiz/:lessonId', (req, res) => {
-  const { lessonId } = req.params
-  const items = quizzes[lessonId] || []
-  res.json(items)
+router.get('/quiz/:lessonId', async (req, res) => {
+  try {
+    const { lessonId } = req.params
+    const { easy = '10', medium = '10', hard = '10' } = req.query
+
+    const config = {
+      easy: Math.max(0, Math.min(50, parseInt(easy as string) || 10)),
+      medium: Math.max(0, Math.min(50, parseInt(medium as string) || 10)),
+      hard: Math.max(0, Math.min(50, parseInt(hard as string) || 10))
+    }
+
+    const cacheKey = `${lessonId}_${config.easy}_${config.medium}_${config.hard}`
+
+    // Check cache first
+    const cachedQuestions = Cache.getQuizQuestions(cacheKey)
+    if (cachedQuestions) {
+      return res.json(cachedQuestions)
+    }
+
+    // Find the subject in catalog
+    const subject = catalog.find(item => item.id === lessonId)
+    if (!subject) {
+      // Fallback to static quizzes if subject not found
+      const items = quizzes[lessonId] || []
+      return res.json(items)
+    }
+
+    // Try to generate questions from Wikipedia
+    try {
+      const wikipediaTitle = WikipediaFetcher.getSubjectWikipediaTitle(subject.title)
+      const wikipediaData = Cache.getWikipediaData(lessonId) ||
+                           await WikipediaFetcher.fetchSubjectData(wikipediaTitle)
+
+      if (wikipediaData) {
+        // Cache the Wikipedia data
+        Cache.setWikipediaData(lessonId, wikipediaData)
+
+        // Generate quiz questions with custom configuration
+        const questions = await QuizGenerator.generateQuizQuestions(wikipediaData, config)
+
+        // Cache the questions with config-specific key
+        Cache.setQuizQuestions(cacheKey, questions)
+
+        return res.json(questions)
+      }
+    } catch (error) {
+      console.error(`Failed to generate Wikipedia-based quiz for ${lessonId}:`, error)
+    }
+
+    // Fallback to static quizzes if Wikipedia fails
+    const items = quizzes[lessonId] || []
+    res.json(items)
+
+  } catch (error) {
+    console.error('Error in quiz route:', error)
+    res.status(500).json({ error: 'Failed to generate quiz questions' })
+  }
 })
 
 const submissionSchema = z.object({
