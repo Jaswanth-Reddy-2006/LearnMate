@@ -65,6 +65,7 @@ export type CatalogItem = {
   tags: string[]
   difficulty: 'beginner' | 'intermediate' | 'advanced'
   duration: number
+  daysRequired?: number
   coverImage: string
   lastUpdated: string
   objectives?: string[]

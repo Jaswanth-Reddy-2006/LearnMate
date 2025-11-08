@@ -7,6 +7,7 @@ export type CatalogItem = {
   tags: string[]
   difficulty: Difficulty
   duration: number
+  daysRequired?: number
   coverImage: string
   lastUpdated: string
   objectives?: string[]

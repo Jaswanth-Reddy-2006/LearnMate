@@ -11,6 +11,7 @@ export const catalog: CatalogItem[] = [
     tags: ['cse', 'algorithms', 'core', 'interview-prep'],
     difficulty: 'intermediate',
     duration: 180,
+    daysRequired: 7,
     coverImage: cover('Data Structures & Algorithms'),
     lastUpdated: new Date().toISOString(),
     objectives: [
@@ -59,6 +60,7 @@ export const catalog: CatalogItem[] = [
     tags: ['cse', 'programming', 'core', 'design'],
     difficulty: 'beginner',
     duration: 150,
+    daysRequired: 5,
     coverImage: cover('Object-Oriented Programming'),
     lastUpdated: new Date().toISOString(),
     objectives: [
@@ -105,6 +107,7 @@ export const catalog: CatalogItem[] = [
     tags: ['cse', 'databases', 'backend', 'sql'],
     difficulty: 'intermediate',
     duration: 200,
+    daysRequired: 8,
     coverImage: cover('Database Management'),
     lastUpdated: new Date().toISOString(),
     objectives: [
@@ -151,6 +154,7 @@ export const catalog: CatalogItem[] = [
     tags: ['cse', 'web', 'frontend', 'backend', 'react'],
     difficulty: 'intermediate',
     duration: 240,
+    daysRequired: 10,
     coverImage: cover('Full-Stack Web Development'),
     lastUpdated: new Date().toISOString(),
     objectives: [

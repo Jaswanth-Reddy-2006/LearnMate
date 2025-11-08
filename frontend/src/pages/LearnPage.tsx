@@ -136,10 +136,13 @@ const LearnPage = () => {
     setIsDetailModalOpen(true)
   }
 
-  const handleStartClick = (course: CatalogItem) => {
-    setSelectedCourse(course)
+  const handleNextClick = (course: CatalogItem) => {
+    // Mark course details as acknowledged
+    localStorage.setItem(`course-acknowledged-${course.id}`, 'true')
     setIsDetailModalOpen(false)
-    setIsQuestionnaireModalOpen(true)
+    if (selectedCourse) {
+      navigate(`/lesson/${selectedCourse.id}`)
+    }
   }
 
   const handleQuestionnaireComplete = (_proficiency: string, _hoursPerDay: number) => {
@@ -283,7 +286,7 @@ const LearnPage = () => {
                         </Badge>
                         <div className="flex items-center gap-1.5 text-xs text-slate-300">
                           <Clock className="h-3.5 w-3.5" />
-                          <span>{course.duration} min</span>
+                          <span>{course.daysRequired || Math.ceil(course.duration / 480)} days</span>
                         </div>
                       </div>
                     </div>
@@ -335,12 +338,12 @@ const LearnPage = () => {
                           className="flex-1 text-xs transition-all duration-300"
                           onClick={(e) => {
                             e.stopPropagation()
-                            handleStartClick(course)
+                            handleNextClick(course)
                           }}
                           title="Start learning this course"
                         >
                           <Zap className="h-3.5 w-3.5" />
-                          <span>Start</span>
+                          <span>Start Learn</span>
                         </Button>
                       </div>
 
@@ -376,7 +379,7 @@ const LearnPage = () => {
         course={selectedCourse}
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
-        onStart={handleStartClick}
+        onNext={handleNextClick}
       />
 
       <LearningQuestionnaireModal

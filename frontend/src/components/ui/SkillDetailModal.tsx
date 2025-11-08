@@ -10,7 +10,7 @@ interface SkillDetailModalProps {
   course: CatalogItem | null
   isOpen: boolean
   onClose: () => void
-  onStart: (course: CatalogItem) => void
+  onNext: (course: CatalogItem) => void
 }
 
 const getDifficultyColor = (difficulty: string): 'default' | 'success' | 'warning' | 'outline' => {
@@ -39,15 +39,14 @@ const getDifficultyIcon = (difficulty: string) => {
   }
 }
 
-export default function SkillDetailModal({ course, isOpen, onClose, onStart }: SkillDetailModalProps) {
+export default function SkillDetailModal({ course, isOpen, onClose, onNext }: SkillDetailModalProps) {
   if (!course) return null
 
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={onClose}>
-      <DialogPrimitive.Portal forceMount>
+      <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" />
         <DialogPrimitive.Content
-          forceMount
           className={cn(
             'fixed left-1/2 top-1/2 z-50 w-full max-w-4xl -translate-x-1/2 -translate-y-1/2',
             'max-h-[90vh] overflow-y-auto rounded-2xl bg-slate-900 p-0 shadow-2xl',
@@ -65,13 +64,14 @@ export default function SkillDetailModal({ course, isOpen, onClose, onStart }: S
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
 
               {/* Close Button */}
-              <button
-                onClick={onClose}
-                className="absolute right-4 top-4 rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition hover:bg-black/40"
-                aria-label="Close modal"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <DialogPrimitive.Close asChild>
+                <button
+                  className="absolute right-4 top-4 rounded-full bg-black/20 p-2 text-white backdrop-blur-sm transition hover:bg-black/40"
+                  aria-label="Close modal"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </DialogPrimitive.Close>
 
               {/* Overlay Badges */}
               <div className="absolute bottom-4 left-4 flex items-center gap-3">
@@ -84,7 +84,7 @@ export default function SkillDetailModal({ course, isOpen, onClose, onStart }: S
                 </Badge>
                 <div className="flex items-center gap-1.5 text-sm text-white">
                   <Clock className="h-4 w-4" />
-                  <span>{course.duration} min</span>
+                  <span>{course.daysRequired || Math.ceil(course.duration / 480)} days</span>
                 </div>
               </div>
             </div>
@@ -205,11 +205,13 @@ export default function SkillDetailModal({ course, isOpen, onClose, onStart }: S
 
               {/* Action Buttons */}
               <div className="flex gap-4 pt-6 border-t border-slate-700">
-                <Button variant="secondary" onClick={onClose} className="flex-1">
-                  Close
-                </Button>
-                <Button variant="primary" onClick={() => course && onStart(course)} className="flex-1">
-                  Start Learning
+                <DialogPrimitive.Close asChild>
+                  <Button variant="secondary" className="flex-1">
+                    Close
+                  </Button>
+                </DialogPrimitive.Close>
+                <Button variant="primary" onClick={() => course && onNext(course)} className="flex-1">
+                  Next
                 </Button>
               </div>
             </div>
