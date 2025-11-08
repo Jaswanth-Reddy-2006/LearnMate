@@ -67,6 +67,11 @@ export type CatalogItem = {
   duration: number
   coverImage: string
   lastUpdated: string
+  objectives?: string[]
+  prerequisites?: string[]
+  careerApplications?: string[]
+  resources?: string[]
+  syllabus?: string[]
 }
 
 export type ChatRecommendation = {
@@ -152,4 +157,47 @@ export type ModerationItem = {
   submittedAt: string
   status: 'open' | 'resolved'
   notes?: string
+}
+
+export type ProficiencyLevel = {
+  level: 'foundational' | 'intermediate' | 'advanced' | 'expert'
+  description: string
+  expectations: string[]
+}
+
+export type CareerImpact = {
+  roleTitle: string
+  relevance: 'critical' | 'important' | 'beneficial'
+  salaryImpact: string
+  growthPotential: string
+}
+
+export type SkillInterconnection = {
+  skillId: string
+  skillName: string
+  relationshipType: 'prerequisite' | 'complementary' | 'advanced'
+  description: string
+}
+
+export type BtechSkillCatalogItem = CatalogItem & {
+  discipline: string
+  branch?: string
+  importanceAssessment: {
+    curriculumCriticalityScore: number
+    industryDemandScore: number
+    rationale: string
+    keyDrivers: string[]
+  }
+  practicalApplications: {
+    realWorldScenario: string
+    projectExample: string
+    industryUse: string
+    careerPathway: string
+  }
+  skillInterconnections: SkillInterconnection[]
+  proficiencyLevels: ProficiencyLevel[]
+  careerImpacts: CareerImpact[]
+  learningOutcomes: string[]
+  coreTopics: string[]
+  recommendedResources: string[]
 }

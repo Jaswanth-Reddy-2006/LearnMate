@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { Menu, LayoutDashboard, BookOpen, PlayCircle, Users, Video, User, ShieldCheck } from 'lucide-react'
+import { Menu, LayoutDashboard, BookOpen, Sparkles, PlayCircle, Users, Video, User, ShieldCheck } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cn } from '../../lib/cn'
@@ -8,6 +8,7 @@ import { cn } from '../../lib/cn'
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/catalog', label: 'Catalog', icon: BookOpen },
+  { path: '/learn', label: 'Learn', icon: Sparkles },
   { path: '/lesson/loop-fundamentals', label: 'Lesson Player', icon: PlayCircle },
   { path: '/quiz/loop-fundamentals', label: 'Quiz', icon: ShieldCheck },
   { path: '/community', label: 'Community', icon: Users },

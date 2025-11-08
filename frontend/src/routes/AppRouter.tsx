@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import LandingPage from '../pages/LandingPage'
 import DashboardPage from '../pages/DashboardPage'
 import CatalogPage from '../pages/CatalogPage'
+import LearnPage from '../pages/LearnPage'
 import LessonPlayerPage from '../pages/LessonPlayerPage'
 import QuizPage from '../pages/QuizPage'
 import CommunityPage from '../pages/CommunityPage'
@@ -20,6 +21,7 @@ const AppRouter = () => {
       <Route element={<MainLayout />}>
         <Route path="dashboard" element={<DashboardPage />} />
         <Route path="catalog" element={<CatalogPage />} />
+        <Route path="learn" element={<LearnPage />} />
         <Route path="lesson/:lessonId" element={<LessonPlayerPage />} />
         <Route path="quiz/:lessonId" element={<QuizPage />} />
         <Route path="community" element={<CommunityPage />} />

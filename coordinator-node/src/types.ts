@@ -9,6 +9,11 @@ export type CatalogItem = {
   duration: number
   coverImage: string
   lastUpdated: string
+  objectives?: string[]
+  prerequisites?: string[]
+  careerApplications?: string[]
+  resources?: string[]
+  syllabus?: string[]
 }
 
 export type Microlesson = {
