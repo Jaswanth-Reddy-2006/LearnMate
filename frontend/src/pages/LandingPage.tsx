@@ -2,25 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import {
-  Sparkles,
-  LayoutDashboard,
-  BookOpen,
-  PlayCircle,
-  Users,
-  Video,
-  User,
-  ShieldCheck,
-  BarChart3,
-  Send,
-  Loader2,
-  TrendingUp,
-} from 'lucide-react'
-import Button from '../components/ui/Button'
-import Card from '../components/ui/Card'
-import Badge from '../components/ui/Badge'
 import { api } from '../lib/api'
-import type { ChatRecommendation } from '../lib/types'
 
 type ChatMessage = {
   id: string
@@ -29,55 +11,15 @@ type ChatMessage = {
   content: string
 }
 
-const features = [
-  {
-    label: 'Dashboard',
-    description: 'Track mastery, streaks, and adaptive milestones.',
-    path: '/dashboard',
-    icon: LayoutDashboard,
-  },
-  {
-    label: 'Catalog',
-    description: 'Browse over twenty curated AI skill journeys.',
-    path: '/catalog',
-    icon: BookOpen,
-  },
-  {
-    label: 'Lesson Player',
-    description: 'Follow microlessons with live agent coaching.',
-    path: '/lesson/loop-fundamentals',
-    icon: PlayCircle,
-  },
-  {
-    label: 'Quiz Lab',
-    description: 'Take adaptive assessments that reroute instantly.',
-    path: '/quiz/loop-fundamentals',
-    icon: ShieldCheck,
-  },
-  {
-    label: 'Community',
-    description: 'Join peers sharing explainer videos and feedback.',
-    path: '/community',
-    icon: Users,
-  },
-  {
-    label: 'Video Studio',
-    description: 'Record walkthroughs with AI storyboards and scripts.',
-    path: '/studio',
-    icon: Video,
-  },
-  {
-    label: 'Profile',
-    description: 'Adjust goals, pacing, and agent collaboration styles.',
-    path: '/profile',
-    icon: User,
-  },
-  {
-    label: 'Moderation Desk',
-    description: 'Review content safety signals and escalation history.',
-    path: '/moderation',
-    icon: BarChart3,
-  },
+const navigationItems = [
+  { label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
+  { label: 'Learn', path: '/learn', icon: 'school' },
+  { label: 'Catalog', path: '/catalog', icon: 'collections_bookmark' },
+  { label: 'Lesson Player', path: '/lesson/loop-fundamentals', icon: 'play_circle' },
+  { label: 'Quiz Lab', path: '/quiz/loop-fundamentals', icon: 'science' },
+  { label: 'Community', path: '/community', icon: 'groups' },
+  { label: 'Video Studio', path: '/studio', icon: 'video_camera_front' },
+  { label: 'Profile', path: '/profile', icon: 'account_circle' },
 ]
 
 const defaultQuickReplies = ['Suggest a focused sprint', 'Plan my interview prep', 'Surface trending lessons']
@@ -101,8 +43,7 @@ const LandingPage = () => {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages)
   const [input, setInput] = useState('')
   const [quickReplies, setQuickReplies] = useState(defaultQuickReplies)
-  const [recommendations, setRecommendations] = useState<ChatRecommendation[]>([])
-  const [error, setError] = useState<string | null>(null)
+
   const messagesRef = useRef(messages)
   const sessionRef = useRef<string | null>(null)
   const turnRef = useRef(1)
@@ -164,7 +105,6 @@ const LandingPage = () => {
       const history = [...messagesRef.current, userMessage].slice(-10)
       setMessages((prev) => [...prev, userMessage])
       setInput('')
-      setError(null)
       try {
         const response = await chatMutation.mutateAsync({ prompt: text, history })
         const agentName = response.agent || 'Aurora Mentor'
@@ -179,9 +119,8 @@ const LandingPage = () => {
           setMessages((prev) => [...prev, agentMessage])
         }
         setQuickReplies(response.suggestions?.length ? response.suggestions : defaultQuickReplies)
-        setRecommendations(response.recommendations ?? [])
       } catch {
-        setError('Unable to reach the coordination service. Try again in a few seconds.')
+        // Error handling removed for simplified UI
       }
     },
     [chatMutation, input],
@@ -191,196 +130,148 @@ const LandingPage = () => {
   const activeSuggestions = useMemo(() => quickReplies.slice(0, 3), [quickReplies])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-surface via-slate-950 to-black text-slate-100">
-      <div className="mx-auto flex min-h-screen max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:flex-row lg:px-10">
-        <aside className="flex w-full flex-col gap-6 rounded-3xl border border-slate-800/70 bg-slate-950/70 p-8 lg:w-80">
-          <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/20 text-primary">
-              <span className="text-2xl font-semibold">LM</span>
-            </div>
-            <div>
-              <p className="text-sm uppercase tracking-wide text-slate-400">LearnMate.AI</p>
-              <p className="text-xl font-semibold text-white">Conversational tutor</p>
-            </div>
+    <div className="flex h-screen bg-background-light dark:bg-background-dark font-display text-on-surface-light dark:text-on-surface-dark antialiased">
+      <aside className="w-80 bg-background-light dark:bg-background-dark p-6 flex-shrink-0 hidden lg:flex flex-col">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-12 h-12 bg-primary/20 dark:bg-primary/10 rounded-lg flex items-center justify-center">
+            <span className="text-primary font-bold text-xl">LM</span>
           </div>
-          <Card className="bg-gradient-to-br from-primary/10 via-slate-900 to-slate-900">
-            <div className="flex items-start gap-3">
-              <Sparkles className="mt-1 h-5 w-5 text-primary" />
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-white">Live multi-agent desk</p>
-                <p className="text-sm text-slate-300">Request plans, quizzes, and peer mentors — the coordinator stitches the right sequence instantly.</p>
-              </div>
-            </div>
-          </Card>
-          <div className="space-y-2">
-            {features.map((feature) => {
-              const Icon = feature.icon
-              return (
-                <Link key={feature.label} to={feature.path} className="block">
-                  <Button
-                    variant="ghost"
-                    className="w-full justify-start gap-3 rounded-xl border border-transparent bg-slate-900/40 px-4 py-3 text-left transition hover:border-primary/40 hover:bg-slate-900/80"
-                  >
-                    <Icon className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="text-sm font-semibold text-white">{feature.label}</p>
-                      <p className="text-xs text-slate-400">{feature.description}</p>
-                    </div>
-                  </Button>
-                </Link>
-              )
-            })}
+          <div>
+            <p className="text-sm font-semibold text-on-surface-light dark:text-on-surface-dark">LEARNMATE.AI</p>
+            <h1 className="text-lg font-bold text-on-surface-light dark:text-on-surface-dark">Conversational tutor</h1>
           </div>
-          <div className="mt-auto space-y-3">
-            <Link to="/onboarding" className="block">
-              <Button className="w-full">Start adaptive onboarding</Button>
+        </div>
+        <nav className="flex-grow space-y-2">
+          <a className="block p-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark" href="#">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs text-primary font-semibold">•</span>
+              <h2 className="font-bold text-on-surface-light dark:text-on-surface-dark">Live multi-agent desk</h2>
+            </div>
+            <p className="text-sm text-on-surface-secondary-light dark:text-on-surface-secondary-dark">Request plans, quizzes, and peer mentors — the coordinator stitches the right sequence instantly.</p>
+          </a>
+          {navigationItems.map((item) => (
+            <Link key={item.label} to={item.path} className="flex items-center gap-3 p-3 text-on-surface-secondary-light dark:text-on-surface-secondary-dark hover:bg-surface-light dark:hover:bg-surface-dark rounded-lg">
+              <span className="material-symbols-outlined">{item.icon}</span>
+              <span className="font-semibold">{item.label}</span>
             </Link>
-            <Link to="/catalog" className="block">
-              <Button variant="secondary" className="w-full">Browse 20+ skills</Button>
-            </Link>
-          </div>
-        </aside>
-        <main className="flex-1">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mx-auto flex w-full max-w-3xl min-h-[640px] flex-col rounded-3xl border border-slate-800/70 bg-slate-950/60 p-6 sm:p-10"
-          >
-            <header className="flex flex-col gap-2 border-b border-slate-800 pb-6 sm:flex-row sm:items-end sm:justify-between">
+          ))}
+        </nav>
+        <div className="mt-auto">
+          <Link to="/profile" className="flex items-center gap-3 p-3 text-on-surface-secondary-light dark:text-on-surface-secondary-dark hover:bg-surface-light dark:hover:bg-surface-dark rounded-lg">
+            <span className="material-symbols-outlined">account_circle</span>
+            <span className="font-semibold">Profile</span>
+          </Link>
+        </div>
+      </aside>
+      <main className="flex-1 bg-surface-light dark:bg-surface-dark flex flex-col h-screen">
+        <div className="flex flex-col h-full max-w-4xl mx-auto w-full">
+          <header className="p-4 sm:p-6 sticky top-0 bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-sm z-10">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-white">Agent Coordination Chat</h1>
-                <p className="text-base text-slate-400">Describe your goal and the orchestrator assembles lessons, quizzes, and community support automatically.</p>
+                <h2 className="text-3xl font-bold text-on-surface-light dark:text-on-surface-dark">Agent Coordination Chat</h2>
+                <p className="text-on-surface-secondary-light dark:text-on-surface-secondary-dark mt-1">Describe your goal and the orchestrator assembles lessons, quizzes, and community support automatically.</p>
               </div>
-              <div className="flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs font-medium uppercase tracking-wide text-primary">
-                <span className="h-2 w-2 rounded-full bg-primary" />
-                Real-time orchestration
+              <div className="mt-4 sm:mt-0">
+                <span className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-primary border border-primary/50 rounded-full">
+                  <span className="w-2 h-2 bg-primary rounded-full"></span>
+                  REAL-TIME ORCHESTRATION
+                </span>
               </div>
-            </header>
-            <div className="mt-6 flex-1 space-y-4 overflow-y-auto pr-1">
+            </div>
+          </header>
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
+            <div className="space-y-6">
               {messages.map((message, index) => (
                 <motion.div
                   key={message.id}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.04 }}
-                  className={
-                    message.role === 'agent'
-                      ? 'mr-auto flex max-w-3xl flex-col gap-2 rounded-2xl bg-slate-900/70 p-4 text-left'
-                      : 'ml-auto flex max-w-3xl flex-col gap-2 rounded-2xl bg-primary/15 p-4 text-right text-white'
-                  }
+                  className="flex"
                 >
-                  <span className="text-xs uppercase tracking-wide text-slate-400">{message.author}</span>
-                  <p className="text-base text-slate-200">{message.content}</p>
+                  <div className="flex-shrink-0 mr-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 dark:bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                      {message.author.charAt(0)}
+                    </div>
+                  </div>
+                  <div className="bg-background-light dark:bg-background-dark p-4 rounded-lg rounded-tl-none max-w-lg">
+                    <p className="text-xs font-bold uppercase tracking-wider text-on-surface-secondary-light dark:text-on-surface-secondary-dark mb-2">{message.author}</p>
+                    <p className="text-on-surface-light dark:text-on-surface-dark">{message.content}</p>
+                  </div>
                 </motion.div>
               ))}
               {isSending && (
                 <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mr-auto flex max-w-xs items-center gap-3 rounded-2xl bg-slate-900/70 px-4 py-3 text-sm text-slate-300"
+                  className="flex"
                 >
-                  <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                  <span>Coordinating with mentors…</span>
+                  <div className="flex-shrink-0 mr-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/20 dark:bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">A</div>
+                  </div>
+                  <div className="bg-background-light dark:bg-background-dark p-4 rounded-lg rounded-tl-none max-w-lg">
+                    <p className="text-xs font-bold uppercase tracking-wider text-on-surface-secondary-light dark:text-on-surface-secondary-dark mb-2">AURORA MENTOR</p>
+                    <p className="text-on-surface-light dark:text-on-surface-dark">Coordinating...</p>
+                  </div>
                 </motion.div>
               )}
-              <div ref={bottomRef} />
             </div>
-            {error && (
-              <div className="mt-2 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-                {error}
-              </div>
-            )}
+          </div>
+          <div className="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark sticky bottom-0">
             {activeSuggestions.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {activeSuggestions.map((suggestion) => (
-                  <Button
+                  <button
                     key={suggestion}
-                    variant="secondary"
-                    disabled={isSending}
-                    className="rounded-full px-4 py-2 text-sm"
                     onClick={() => handleSend(suggestion)}
+                    disabled={isSending}
+                    className="px-4 py-2 text-sm font-medium bg-background-light dark:bg-background-dark text-on-surface-light dark:text-on-surface-dark rounded-lg hover:bg-border-light dark:hover:bg-border-dark transition-colors"
                   >
                     {suggestion}
-                  </Button>
+                  </button>
                 ))}
               </div>
             )}
-            <div className="mt-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-base text-slate-300">Ask for a new skill plan, request quiz drills, or invite the empathy coach for feedback.</p>
-                <Link to="/dashboard">
-                  <Button variant="ghost" className="whitespace-nowrap">
-                    Jump to dashboard
-                  </Button>
-                </Link>
-              </div>
-              <div className="mt-4 flex gap-3">
-                <textarea
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' && !event.shiftKey) {
-                      event.preventDefault()
-                      void handleSend()
-                    }
-                  }}
-                  rows={1}
-                  placeholder="Describe the skill, project, or interview you want to tackle..."
-                  className="min-h-[56px] flex-1 resize-none rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-base text-slate-200 placeholder:text-slate-500 focus:border-primary/50 focus:outline-none"
-                />
-                <Button onClick={() => handleSend()} disabled={isSending} className="h-[48px] min-w-[120px]">
-                  {isSending ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Sending</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="h-4 w-4" />
-                      <span>Send</span>
-                    </>
-                  )}
-                </Button>
+            <div className="relative bg-background-light dark:bg-background-dark rounded-lg p-2 border border-transparent focus-within:border-primary/50 transition-colors">
+              <label className="sr-only" htmlFor="chat-input">Describe the skill, project, or interview you want to tackle...</label>
+              <textarea
+                id="chat-input"
+                value={input}
+                onChange={(event) => setInput(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' && !event.shiftKey) {
+                    event.preventDefault()
+                    void handleSend()
+                  }
+                }}
+                placeholder="Describe the skill, project, or interview you want to tackle..."
+                rows={1}
+                className="w-full bg-transparent border-none resize-none p-2 pr-28 focus:ring-0 text-on-surface-light dark:text-on-surface-dark placeholder:text-on-surface-secondary-light dark:placeholder:text-on-surface-secondary-dark"
+                style={{ minHeight: 'auto', height: 'auto' }}
+                onInput={(e) => {
+                  const target = e.target as HTMLTextAreaElement
+                  target.style.height = 'auto'
+                  target.style.height = `${Math.max(56, target.scrollHeight)}px`
+                }}
+              />
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                <button className="p-2 rounded-md text-on-surface-secondary-light dark:text-on-surface-secondary-dark hover:bg-surface-light dark:hover:bg-surface-dark transition-colors">
+                  <span className="material-symbols-outlined text-xl">mic</span>
+                  <span className="sr-only">Use microphone</span>
+                </button>
+                <button
+                  onClick={() => handleSend()}
+                  disabled={isSending}
+                  className="flex items-center justify-center gap-2 w-24 h-10 bg-primary text-slate-900 rounded-md font-semibold hover:opacity-90 transition-opacity"
+                >
+                  <span className="material-symbols-outlined text-lg">send</span>
+                  Send
+                </button>
               </div>
             </div>
-            {recommendations.length > 0 && (
-              <div className="mt-6 space-y-3">
-                <div className="flex items-center gap-2 text-sm text-slate-400">
-                  <TrendingUp className="h-4 w-4 text-primary" />
-                  <span>Recommended next steps</span>
-                </div>
-                <div className="grid gap-4 lg:grid-cols-2">
-                  {recommendations.map((item) => (
-                    <Card key={item.id} className="bg-slate-900/40">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <p className="text-base font-semibold text-white">{item.title}</p>
-                          <Badge variant="outline" className="capitalize">
-                            {item.difficulty}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-slate-400">{item.description}</p>
-                        <div className="flex flex-wrap gap-2 text-xs text-slate-400">
-                          <span className="rounded-full border border-slate-700 px-3 py-1">{item.duration} min</span>
-                          {item.tags.map((tag) => (
-                            <span key={tag} className="rounded-full border border-slate-800 px-3 py-1">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                        <Link to={`/catalog?q=${encodeURIComponent(item.id)}`} className="block">
-                          <Button className="w-full">View in catalog</Button>
-                        </Link>
-                      </div>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            )}
-          </motion.div>
-        </main>
-      </div>
+          </div>
+        </div>
+      </main>
     </div>
   )
 }

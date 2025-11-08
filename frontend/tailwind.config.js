@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
@@ -21,7 +22,17 @@ export default {
           text: '#E6E6E6',
           muted: '#8C8C8C',
         },
-        primary: '#00FFFF',
+        primary: '#00E5FF',
+        'background-light': '#F3F4F6',
+        'background-dark': '#0B101B',
+        'surface-light': '#FFFFFF',
+        'surface-dark': '#171F2C',
+        'on-surface-light': '#111827',
+        'on-surface-dark': '#E5E7EB',
+        'on-surface-secondary-light': '#6B7280',
+        'on-surface-secondary-dark': '#9CA3AF',
+        'border-light': '#E5E7EB',
+        'border-dark': '#374151',
         accent: '#F15BB5',
         success: '#31C48D',
         warning: '#F59E0B',
