@@ -1,13 +1,18 @@
 import type { CatalogItem } from '../types'
 
+import { WikipediaFetcher } from '../utils/wikipediaFetcher'
+import { DataEnricher } from '../utils/dataEnricher'
+
 const cover = (text: string) => `https://placehold.co/600x400/0f172a/38bdf8?text=${encodeURIComponent(text)}`
 
-export const catalog: CatalogItem[] = [
+
+
+const rawCatalog: CatalogItem[] = [
   // ============ COMPUTER SCIENCE & ENGINEERING ============
   {
     id: 'cse-dsa',
     title: 'Data Structures & Algorithms',
-    description: 'Master fundamental and advanced data structures with complexity analysis and optimization techniques.',
+    description: 'Comprehensive study of fundamental and advanced data structures including arrays, linked lists, trees, and graphs. Master algorithm analysis, Big O notation, and learn to solve complex computational problems using dynamic programming, greedy algorithms, and optimization techniques essential for technical interviews and software engineering roles.',
     tags: ['cse', 'algorithms', 'core', 'interview-prep'],
     difficulty: 'intermediate',
     duration: 180,
@@ -15,11 +20,12 @@ export const catalog: CatalogItem[] = [
     coverImage: cover('Data Structures & Algorithms'),
     lastUpdated: new Date().toISOString(),
     objectives: [
-      'Understand fundamental data structures (arrays, linked lists, stacks, queues, trees, graphs)',
-      'Analyze time and space complexity of algorithms',
-      'Implement sorting and searching algorithms',
-      'Solve complex algorithmic problems using dynamic programming and greedy approaches',
-      'Optimize code for performance and memory efficiency'
+      'Master fundamental data structures: arrays, linked lists, stacks, queues, binary trees, graphs, and hash tables',
+      'Analyze algorithmic time and space complexity using Big O notation for optimal problem-solving',
+      'Implement and compare sorting algorithms: bubble sort, merge sort, quicksort, heap sort, and their trade-offs',
+      'Solve dynamic programming problems using memoization and tabulation approaches',
+      'Apply greedy algorithms and backtracking techniques for optimization problems',
+      'Design and optimize algorithms for competitive programming and technical interviews'
     ],
     prerequisites: [
       'Basic programming knowledge in any language',
@@ -33,6 +39,45 @@ export const catalog: CatalogItem[] = [
       'System design and architecture decisions',
       'Research positions in computer science'
     ],
+    benefits: [
+      'Master the foundation of efficient software development and problem-solving',
+      'Crack technical interviews at top tech companies (Google, Microsoft, Amazon, Facebook)',
+      'Develop skills to optimize performance-critical applications',
+      'Build competitive programming portfolio and win contests',
+      'Prepare for system design and architecture roles'
+    ],
+    importance: 'Data Structures and Algorithms form the backbone of computer science. Understanding these concepts is crucial for writing efficient, scalable software. Companies like Google, Amazon, and Microsoft prioritize candidates with strong DSA fundamentals. Mastering this subject directly impacts career trajectory in software engineering.',
+    industryRelevance: {
+      relevanceScore: 98,
+      topIndustries: ['Tech Giants (FAANG)', 'Financial Services', 'E-commerce', 'Cloud Computing', 'Gaming'],
+      salaryImpact: '+35-50% salary premium for professionals with strong DSA expertise'
+    },
+    realWorldApplications: [
+      'Google Search: Uses algorithms to rank and retrieve billions of web pages in milliseconds',
+      'Netflix Recommendations: Graph algorithms process user behavior and content relationships',
+      'Uber Route Optimization: Shortest path algorithms determine efficient delivery routes',
+      'Database Query Optimization: B-trees and indexing structure organize data efficiently',
+      'Social Media Feeds: Complex tree and graph algorithms filter and rank content',
+      'Cryptocurrency Mining: Hash tables and tree structures verify transactions'
+    ],
+    keyTopics: [
+      'Big O Notation and Complexity Analysis',
+      'Arrays and Dynamic Arrays',
+      'Linked Lists (Singly, Doubly, Circular)',
+      'Stacks, Queues, and Deques',
+      'Trees (Binary, BST, AVL, Red-Black)',
+      'Graphs and Graph Traversals',
+      'Sorting Algorithms Performance',
+      'Dynamic Programming Patterns',
+      'Hash Tables and Hashing'
+    ],
+    learningOutcomes: [
+      'Analyze any algorithm and determine its time/space complexity',
+      'Choose appropriate data structure for specific problems',
+      'Implement algorithms from scratch without guidance',
+      'Solve LeetCode hard problems independently',
+      'Design efficient solutions in technical interviews'
+    ],
     resources: [
       'CLRS Introduction to Algorithms',
       'LeetCode platform for practice',
@@ -41,22 +86,28 @@ export const catalog: CatalogItem[] = [
       'Coursera Algorithms specialization'
     ],
     syllabus: [
-      'Arrays and Strings',
-      'Linked Lists',
-      'Stacks and Queues',
-      'Trees and Binary Search Trees',
-      'Graphs and Graph Algorithms',
-      'Sorting Algorithms',
-      'Searching Algorithms',
-      'Dynamic Programming',
-      'Greedy Algorithms',
-      'Complexity Analysis'
+      'Introduction to Big O Notation and Complexity Analysis',
+      'Arrays, Strings, and Basic Operations',
+      'Linked Lists: Singly, Doubly, and Circular',
+      'Stacks and Queues: Applications and Implementation',
+      'Binary Trees and Binary Search Trees',
+      'Advanced Tree Structures: AVL, Red-Black Trees',
+      'Graphs: Representations and Traversals (BFS, DFS)',
+      'Shortest Path Algorithms: Dijkstra and Bellman-Ford',
+      'Sorting Algorithms: Comparison and Non-Comparison Based',
+      'Searching and Selection Algorithms',
+      'Dynamic Programming: Problems and Patterns',
+      'Greedy Algorithms and Optimization',
+      'Backtracking and Recursion',
+      'Hash Tables and Hashing Techniques',
+      'Heaps and Priority Queues',
+      'Competitive Programming Strategies'
     ],
   },
   {
     id: 'cse-oop',
     title: 'Object-Oriented Programming',
-    description: 'Design scalable, maintainable software using OOP principles and design patterns.',
+    description: 'Master the principles of object-oriented programming paradigm. Learn encapsulation, inheritance, polymorphism, and abstraction to build maintainable, scalable software. Study design patterns, UML modeling, and SOLID principles for professional software architecture and development.',
     tags: ['cse', 'programming', 'core', 'design'],
     difficulty: 'beginner',
     duration: 150,
@@ -64,11 +115,12 @@ export const catalog: CatalogItem[] = [
     coverImage: cover('Object-Oriented Programming'),
     lastUpdated: new Date().toISOString(),
     objectives: [
-      'Understand core OOP concepts: encapsulation, inheritance, polymorphism, abstraction',
-      'Design class hierarchies and relationships',
-      'Implement design patterns for common software problems',
-      'Write clean, maintainable, and extensible code',
-      'Apply OOP principles in real-world software development'
+      'Understand and apply the four pillars of OOP: encapsulation, inheritance, polymorphism, and abstraction',
+      'Design robust class hierarchies using composition and inheritance relationships',
+      'Implement creational, structural, and behavioral design patterns',
+      'Apply SOLID principles for scalable and maintainable code',
+      'Create UML diagrams and design documentation for software systems',
+      'Refactor procedural code into well-structured object-oriented architectures'
     ],
     prerequisites: [
       'Basic programming knowledge',
@@ -89,21 +141,64 @@ export const catalog: CatalogItem[] = [
       'Java/C# documentation for OOP features'
     ],
     syllabus: [
-      'Introduction to OOP Concepts',
-      'Classes and Objects',
-      'Encapsulation and Access Modifiers',
-      'Inheritance and Polymorphism',
+      'Paradigm Shift: From Procedural to Object-Oriented Programming',
+      'Classes, Objects, and Instances',
+      'Encapsulation and Access Modifiers (public, private, protected)',
+      'Constructors, Destructors, and Lifecycle Methods',
+      'Inheritance: Single, Multiple, and Multilevel',
+      'Polymorphism: Method Overloading and Overriding',
       'Abstract Classes and Interfaces',
-      'Design Patterns Overview',
-      'SOLID Principles',
-      'Exception Handling',
-      'Code Organization and Architecture'
+      'Composition vs Inheritance',
+      'Design Patterns: Singleton, Factory, Observer, Strategy',
+      'SOLID Principles and Architecture',
+      'Exception Handling and Error Management',
+      'Reflection and Metaprogramming',
+      'UML Diagrams and Design Documentation'
+    ],
+    benefits: [
+      'Write cleaner, more maintainable, and scalable code',
+      'Master professional software development practices',
+      'Implement industry-standard design patterns',
+      'Excel in coding interviews focused on design',
+      'Lead architectural decisions in projects'
+    ],
+    importance: 'Object-Oriented Programming is the dominant paradigm in enterprise software development. Companies building large-scale systems rely on OOP principles to manage complexity and ensure code maintainability. Understanding OOP is essential for any serious software engineer and opens doors to senior and leadership roles.',
+    industryRelevance: {
+      relevanceScore: 96,
+      topIndustries: ['Enterprise Software', 'Web Development', 'Fintech', 'Healthcare IT', 'Enterprise Solutions'],
+      salaryImpact: '+25-40% salary increase with OOP expertise'
+    },
+    realWorldApplications: [
+      'Enterprise Java Applications: Banks use OOP for mission-critical systems handling billions in transactions',
+      'C# Enterprise Applications: Microsoft technologies power global organizations',
+      'Python Web Frameworks: Django and Flask use OOP for web application development',
+      'Game Development: Unreal Engine and Unity use inheritance and polymorphism for game objects',
+      'Mobile Apps: iOS and Android frameworks are built on OOP principles',
+      'Cloud Services: AWS, Azure, and Google Cloud APIs are designed using OOP patterns'
+    ],
+    keyTopics: [
+      'Fundamental OOP Concepts and Principles',
+      'Class Design and Object Modeling',
+      'Advanced Inheritance Patterns',
+      'Polymorphism and Method Dispatch',
+      'Encapsulation and Data Hiding',
+      'Abstract Types and Interfaces',
+      'Design Patterns Implementation',
+      'SOLID Principles in Practice',
+      'Exception Handling Strategies'
+    ],
+    learningOutcomes: [
+      'Design robust class hierarchies without code duplication',
+      'Implement design patterns to solve common design problems',
+      'Create maintainable and extensible code architectures',
+      'Apply SOLID principles to write professional-grade code',
+      'Mentor junior developers in OOP best practices'
     ],
   },
   {
     id: 'cse-databases',
     title: 'Database Management Systems',
-    description: 'Design, optimize, and manage relational and non-relational databases at scale.',
+    description: 'Comprehensive study of relational and non-relational database systems. Learn database design, normalization, SQL optimization, transaction management, and scalability techniques for enterprise applications. Covers both traditional RDBMS and modern NoSQL solutions.',
     tags: ['cse', 'databases', 'backend', 'sql'],
     difficulty: 'intermediate',
     duration: 200,
@@ -111,11 +206,13 @@ export const catalog: CatalogItem[] = [
     coverImage: cover('Database Management'),
     lastUpdated: new Date().toISOString(),
     objectives: [
-      'Understand relational database design and normalization',
-      'Master SQL queries, joins, and advanced operations',
-      'Design efficient database schemas and indexes',
-      'Implement database security and access control',
-      'Optimize query performance and database scalability'
+      'Master relational database design using normalization and entity-relationship modeling',
+      'Write complex SQL queries including joins, subqueries, window functions, and CTEs',
+      'Design efficient database schemas with appropriate indexing strategies',
+      'Implement ACID properties and transaction management',
+      'Optimize query performance through execution plans and analysis',
+      'Understand and implement NoSQL databases for specific use cases',
+      'Manage database security, backup, recovery, and replication'
     ],
     prerequisites: [
       'Basic programming knowledge',
@@ -137,20 +234,64 @@ export const catalog: CatalogItem[] = [
       'Coursera Database courses'
     ],
     syllabus: [
-      'Relational Model and SQL',
-      'Database Design and Normalization',
-      'Query Optimization and Indexing',
-      'Transactions and Concurrency',
-      'Database Security',
-      'NoSQL Databases',
-      'Big Data and Distributed Systems',
-      'Database Administration'
+      'Relational Model and Fundamentals of Databases',
+      'SQL: DDL, DML, and DCL Operations',
+      'Entity-Relationship (ER) Modeling and Database Design',
+      'Normalization: 1NF to BCNF',
+      'Advanced SQL: Joins, Subqueries, and Window Functions',
+      'Indexing Strategies and Query Optimization',
+      'Transactions, ACID Properties, and Concurrency Control',
+      'Database Security and Access Control',
+      'NoSQL Databases: MongoDB, Cassandra, Redis',
+      'Distributed Databases and Replication',
+      'Big Data Technologies and Data Warehousing',
+      'Backup, Recovery, and High Availability',
+      'Performance Tuning and Monitoring'
+    ],
+    benefits: [
+      'Master data management for mission-critical applications',
+      'Command premium salaries with database expertise',
+      'Become essential to any tech organization',
+      'Design systems handling millions of transactions',
+      'Optimize performance for real-time applications'
+    ],
+    importance: 'Data is the lifeblood of modern organizations. Database professionals are highly sought after and command top salaries. Understanding database design, optimization, and management is crucial for backend engineers, data engineers, and system architects. Poor database design causes costly performance issues and system failures.',
+    industryRelevance: {
+      relevanceScore: 97,
+      topIndustries: ['Fintech', 'E-commerce', 'Data Analytics', 'Social Media', 'Cloud Infrastructure'],
+      salaryImpact: '+40-60% salary premium for database expertise'
+    },
+    realWorldApplications: [
+      'Facebook: Manages petabytes of data using distributed databases and custom storage solutions',
+      'Amazon DynamoDB: Powers millions of concurrent requests for AWS customers globally',
+      'Netflix: Uses NoSQL databases for personalization serving 250+ million users',
+      'Banking Systems: PostgreSQL and Oracle handle critical financial transactions with ACID guarantees',
+      'E-commerce Platforms: Index optimization enables fast product searches across millions of items',
+      'Social Media: Graph databases efficiently store and query complex relationship data'
+    ],
+    keyTopics: [
+      'Database Design and Normalization Theory',
+      'SQL Query Writing and Optimization',
+      'Index Design and Query Planning',
+      'Transaction Management and Concurrency',
+      'NoSQL Database Architectures',
+      'Data Replication and Consistency',
+      'Database Security and Encryption',
+      'Scalability and Partitioning Strategies',
+      'Monitoring and Performance Analysis'
+    ],
+    learningOutcomes: [
+      'Design efficient database schemas from scratch',
+      'Write complex queries that execute optimally',
+      'Troubleshoot slow queries using execution plans',
+      'Implement proper indexing strategies',
+      'Choose between SQL and NoSQL for different scenarios'
     ],
   },
   {
     id: 'cse-webdev',
     title: 'Full-Stack Web Development',
-    description: 'Build modern, scalable web applications using current frameworks and best practices.',
+    description: 'Master modern web development from frontend to backend. Learn responsive design with HTML/CSS, dynamic interfaces with React, and robust APIs with Node.js/Express. Build production-ready applications with authentication, databases, and deployment strategies.',
     tags: ['cse', 'web', 'frontend', 'backend', 'react'],
     difficulty: 'intermediate',
     duration: 240,
@@ -158,54 +299,184 @@ export const catalog: CatalogItem[] = [
     coverImage: cover('Full-Stack Web Development'),
     lastUpdated: new Date().toISOString(),
     objectives: [
-      'Master frontend technologies (HTML, CSS, JavaScript, React)',
-      'Build robust backend APIs with Node.js and databases',
-      'Implement full-stack application architecture',
-      'Deploy and maintain web applications in production',
-      'Apply modern development practices and tools'
+      'Master semantic HTML5 and modern CSS for responsive web design',
+      'Build interactive user interfaces with JavaScript and React framework',
+      'Develop RESTful and GraphQL APIs using Node.js and Express',
+      'Implement user authentication and authorization mechanisms',
+      'Design database schemas and implement data persistence',
+      'Deploy applications to cloud platforms and manage DevOps workflows',
+      'Apply security best practices and performance optimization techniques'
     ],
     prerequisites: [
-      'Basic programming knowledge',
-      'Understanding of web technologies',
-      'Familiarity with command line and version control'
+      'Basic programming knowledge and JavaScript fundamentals',
+      'Understanding of client-server architecture',
+      'Familiarity with Git and command line tools'
     ],
     careerApplications: [
-      'Full-stack developer positions',
-      'Frontend/backend specialist roles',
-      'Web application development',
-      'Startup development teams',
-      'E-commerce platform development'
+      'Full-stack developer positions at tech companies',
+      'Frontend or backend specialist roles',
+      'Startup and early-stage company development',
+      'E-commerce and SaaS platform development',
+      'Web application architect roles'
     ],
     resources: [
-      'MDN Web Docs',
-      'React documentation',
-      'Node.js guides',
-      'freeCodeCamp curriculum',
-      'The Odin Project'
+      'MDN Web Docs (HTML/CSS/JavaScript)',
+      'React official documentation and tutorials',
+      'Node.js and Express.js guides',
+      'freeCodeCamp full-stack curriculum',
+      'The Odin Project comprehensive guide'
     ],
     syllabus: [
-      'HTML, CSS, and JavaScript Fundamentals',
-      'Frontend Frameworks (React)',
-      'Backend Development (Node.js, Express)',
-      'Database Integration',
-      'Authentication and Security',
-      'Deployment and DevOps'
+      'Web Standards: HTML5, CSS3, and Semantic Markup',
+      'Responsive Design and Mobile-First Approach',
+      'JavaScript: ES6+, Async Programming, and DOM Manipulation',
+      'Frontend Frameworks: React Components and Hooks',
+      'State Management: Context API and Redux',
+      'Backend Fundamentals: Node.js and Express.js',
+      'RESTful API Design and Implementation',
+      'Database Design and SQL/NoSQL Integration',
+      'User Authentication and Authorization',
+      'Security: HTTPS, CORS, and Input Validation',
+      'Testing: Unit, Integration, and End-to-End Tests',
+      'Deployment: Cloud Platforms and CI/CD Pipelines',
+      'Performance Optimization and Monitoring'
+    ],
+    benefits: [
+      'Build complete web applications from idea to deployment',
+      'Become highly employable with end-to-end skills',
+      'Start your own web-based business or SaaS',
+      'Work on diverse projects using modern technologies',
+      'Command competitive salaries in startup and enterprise environments'
+    ],
+    importance: 'Full-Stack Web Development is one of the most in-demand skill sets in tech. Web applications power modern business, and companies need developers who understand both frontend and backend. Full-stack developers are valued for their ability to see the complete picture and deliver end-to-end solutions.',
+    industryRelevance: {
+      relevanceScore: 99,
+      topIndustries: ['Startups', 'SaaS', 'E-commerce', 'Social Platforms', 'Tech Companies'],
+      salaryImpact: '+30-55% salary premium for full-stack expertise'
+    },
+    realWorldApplications: [
+      'Netflix Web Interface: React components deliver millions of hours of content',
+      'Airbnb Platform: Full-stack JavaScript enables seamless booking experience',
+      'Slack: Web application provides productivity to millions of teams',
+      'Shopify Stores: Full-stack platforms enable small businesses online',
+      'GitHub: Web interface manages billions of lines of code',
+      'Real-time Applications: WebSockets enable live chat, notifications, and collaboration'
+    ],
+    keyTopics: [
+      'Modern Web Architecture and Protocols',
+      'Responsive Frontend Design',
+      'JavaScript Framework Mastery',
+      'Backend API Development',
+      'Database Integration and Optimization',
+      'User Authentication and Security',
+      'Performance and Scalability',
+      'DevOps and Deployment',
+      'Testing and Quality Assurance'
+    ],
+    learningOutcomes: [
+      'Build production-ready web applications independently',
+      'Deploy applications to cloud platforms',
+      'Implement secure authentication and authorization',
+      'Optimize performance for millions of users',
+      'Architect scalable systems from scratch'
     ],
   },
   {
     id: 'cse-systemdesign',
     title: 'System Design & Architecture',
-    description: 'Design large-scale, distributed systems that are scalable, reliable, and maintainable.',
+    description: 'Master the design of large-scale, distributed systems. Learn scalability patterns, consistency models, load balancing, caching strategies, and database sharding. Design systems for millions of users with focus on reliability, performance, and maintainability.',
     tags: ['cse', 'architecture', 'backend', 'senior'],
     difficulty: 'advanced',
     duration: 220,
+    daysRequired: 12,
     coverImage: cover('System Design & Architecture'),
     lastUpdated: new Date().toISOString(),
-    objectives: ['Master core concepts'],
-    prerequisites: ['Basic knowledge'],
-    careerApplications: ['Tech roles'],
-    resources: ['Documentation'],
-    syllabus: ['Fundamentals'],
+    objectives: [
+      'Design scalable systems using horizontal and vertical scaling techniques',
+      'Understand and apply distributed system principles and patterns',
+      'Implement load balancing and database sharding strategies',
+      'Design caching architectures for performance optimization',
+      'Create resilient systems with fault tolerance and high availability',
+      'Evaluate trade-offs between consistency, availability, and partition tolerance',
+      'Design systems handling millions of concurrent users'
+    ],
+    prerequisites: [
+      'Strong programming background and software design knowledge',
+      'Understanding of databases and networking basics',
+      'Experience with backend development and APIs'
+    ],
+    careerApplications: [
+      'Senior software engineer roles',
+      'Tech lead and architect positions',
+      'Infrastructure and platform engineer roles',
+      'System design interview preparation',
+      'Enterprise system design and optimization'
+    ],
+    resources: [
+      'Designing Data-Intensive Applications book',
+      'System Design Interview by Alex Xu',
+      'High Scalability blog',
+      'Grokking System Design Interviews',
+      'DDIA companion materials and papers'
+    ],
+    syllabus: [
+      'Scalability Fundamentals and Growth Estimation',
+      'Horizontal and Vertical Scaling Strategies',
+      'Load Balancing and Content Delivery Networks',
+      'Caching: Client-side, Server-side, and CDN Caching',
+      'Database Scaling: Replication and Sharding',
+      'Message Queues and Asynchronous Processing',
+      'Microservices Architecture and API Gateway',
+      'NoSQL Databases: Use Cases and Trade-offs',
+      'Distributed Transactions and Consistency Patterns',
+      'Monitoring, Logging, and System Observability',
+      'Security in Distributed Systems',
+      'Real-world System Design Examples (Twitter, Instagram, Netflix, etc.)'
+    ],
+    benefits: [
+      'Ace system design interviews at top tech companies',
+      'Command executive-level salaries as a system architect',
+      'Design systems that scale to billions of users',
+      'Become indispensable as a tech lead and mentor',
+      'Lead technical strategy and infrastructure decisions',
+      'Build resilient systems that handle real-world challenges',
+      'Master skills that define senior engineer roles'
+    ],
+    importance: 'System design is the differentiator between junior and senior engineers. It determines whether systems scale, remain reliable, and serve billions of users efficiently. Companies need experienced system designers to build infrastructure that supports growth. This skill is tested in every senior-level interview and determines your path to technical leadership.',
+    industryRelevance: {
+      relevanceScore: 98,
+      topIndustries: ['Big Tech (FAANG)', 'Cloud Platforms', 'Financial Services', 'E-commerce', 'Infrastructure'],
+      salaryImpact: '+50-100% salary premium for system design expertise'
+    },
+    realWorldApplications: [
+      'Google: Designs systems processing 8.5 billion searches daily across multiple datacenters',
+      'Netflix: Handles 250+ million users with intelligent caching and microservices',
+      'Twitter: Manages real-time stream processing for 500 million tweets daily',
+      'LinkedIn: Scales to billions of connections with distributed databases',
+      'Uber: Coordinates millions of drivers and passengers in real-time',
+      'AWS/Azure/GCP: Design infrastructure serving millions of customers globally'
+    ],
+    keyTopics: [
+      'Scalability and Performance Optimization',
+      'Distributed Systems Design Patterns',
+      'Consistency and Availability Trade-offs',
+      'Caching Strategies and CDN',
+      'Database Scaling and Sharding',
+      'Load Balancing and Failover',
+      'Message Queues and Event-Driven Architecture',
+      'Microservices and API Gateway Patterns',
+      'Monitoring and Observability',
+      'Security in Distributed Systems'
+    ],
+    learningOutcomes: [
+      'Design systems handling millions of concurrent users',
+      'Estimate capacity and growth requirements',
+      'Choose between consistency, availability, and partition tolerance',
+      'Architect highly available and fault-tolerant systems',
+      'Optimize for performance and cost at scale',
+      'Implement and evaluate system design trade-offs',
+      'Solve real-world system design problems'
+    ],
   },
   {
     id: 'cse-designpatterns',
@@ -619,3 +890,44 @@ export const catalog: CatalogItem[] = [
     lastUpdated: new Date().toISOString(),
   },
 ]
+
+// Enhance catalog item with enriched data
+const enhanceWithData = async (item: CatalogItem): Promise<CatalogItem> => {
+  try {
+    const enrichedData = await DataEnricher.enrichCourseData(item.title)
+    return {
+      ...item,
+      importance: enrichedData.importance,
+      benefits: enrichedData.benefits,
+      realWorldApplications: enrichedData.realWorldApplications,
+      industryDemand: enrichedData.industryDemand,
+      learningTips: enrichedData.learningTips,
+    }
+  } catch (error) {
+    console.error(`Failed to enhance catalog item ${item.id}:`, error)
+    return item
+  }
+}
+
+// Cache for enhanced catalog
+let enhancedCatalogCache: CatalogItem[] | null = null
+
+export const getEnhancedCatalog = async (): Promise<CatalogItem[]> => {
+  if (enhancedCatalogCache) {
+    return enhancedCatalogCache
+  }
+
+  try {
+    // Enhance catalog items with enriched data in parallel
+    const enhancementPromises = rawCatalog.map(item => enhanceWithData(item))
+    enhancedCatalogCache = await Promise.all(enhancementPromises)
+    return enhancedCatalogCache
+  } catch (error) {
+    console.error('Failed to enhance catalog with data:', error)
+    // Return raw catalog as fallback
+    return rawCatalog
+  }
+}
+
+// For backward compatibility, export raw catalog synchronously
+export const catalog = rawCatalog

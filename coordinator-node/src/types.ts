@@ -1,5 +1,15 @@
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced'
 
+export type EnrichedCourseData = {
+  overview: string
+  benefits: string[]
+  importance: string
+  keyTopics: string[]
+  realWorldApplications: string[]
+  industryDemand: string
+  learningTips: string[]
+}
+
 export type CatalogItem = {
   id: string
   title: string
@@ -15,6 +25,18 @@ export type CatalogItem = {
   careerApplications?: string[]
   resources?: string[]
   syllabus?: string[]
+  benefits?: string[]
+  importance?: string
+  industryDemand?: string
+  learningTips?: string[]
+  industryRelevance?: {
+    relevanceScore: number
+    topIndustries: string[]
+    salaryImpact: string
+  }
+  realWorldApplications?: string[]
+  keyTopics?: string[]
+  learningOutcomes?: string[]
 }
 
 export type Microlesson = {

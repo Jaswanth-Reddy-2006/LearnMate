@@ -34,6 +34,8 @@ export default function LearningQuestionnaireModal({
 }: LearningQuestionnaireModalProps) {
   const [selectedProficiency, setSelectedProficiency] = useState<string>('')
   const [selectedHours, setSelectedHours] = useState<number>(0)
+  const [customHours, setCustomHours] = useState<string>('')
+  const [isCustom, setIsCustom] = useState(false)
 
   const calculateTimeline = (proficiency: string, hours: number) => {
     const baseDays = {
@@ -48,19 +50,36 @@ export default function LearningQuestionnaireModal({
     return adjustedDays
   }
 
-  const estimatedDays = selectedProficiency && selectedHours
-    ? calculateTimeline(selectedProficiency, selectedHours)
+  const getFinalHours = (): number => {
+    if (isCustom) {
+      return Math.max(0, parseFloat(customHours) || 0)
+    }
+    return selectedHours
+  }
+
+  const finalHours = getFinalHours()
+
+  const estimatedDays = selectedProficiency && finalHours > 0
+    ? calculateTimeline(selectedProficiency, finalHours)
     : null
 
   const handleConfirm = () => {
-    if (selectedProficiency && selectedHours) {
-      onConfirm(selectedProficiency, selectedHours)
+    const hours = getFinalHours()
+    if (selectedProficiency && hours > 0) {
+      onConfirm(selectedProficiency, hours)
     }
   }
 
   const resetForm = () => {
     setSelectedProficiency('')
     setSelectedHours(0)
+    setIsCustom(false)
+    setCustomHours('')
+  }
+
+  const handleHoursSelect = (value: number) => {
+    setIsCustom(false)
+    setSelectedHours(value)
   }
 
   const handleClose = () => {
@@ -72,10 +91,9 @@ export default function LearningQuestionnaireModal({
 
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={handleClose}>
-      <DialogPrimitive.Portal forceMount>
+      <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm" />
         <DialogPrimitive.Content
-          forceMount
           className={cn(
             'fixed left-1/2 top-1/2 z-50 w-full max-w-2xl -translate-x-1/2 -translate-y-1/2',
             'max-h-[90vh] overflow-y-auto rounded-2xl bg-slate-900 p-0 shadow-2xl',
@@ -133,7 +151,7 @@ export default function LearningQuestionnaireModal({
                 {dailyHours.map((option) => (
                   <button
                     key={option.value}
-                    onClick={() => setSelectedHours(option.value)}
+                    onClick={() => handleHoursSelect(option.value)}
                     className={cn(
                       'rounded-lg border p-4 text-left transition-all',
                       selectedHours === option.value
@@ -145,6 +163,59 @@ export default function LearningQuestionnaireModal({
                     <div className="text-sm text-slate-400">{option.description}</div>
                   </button>
                 ))}
+              </div>
+
+              {/* Custom Hours Input */}
+              {isCustom && (
+                <div className="mt-4">
+                  <label className="block text-sm font-semibold text-white mb-2">
+                    Enter your daily learning hours:
+                  </label>
+                  <input
+                    type="number"
+                    min="0.5"
+                    max="12"
+                    step="0.5"
+                    value={customHours}
+                    onChange={(e) => setCustomHours(e.target.value)}
+                    placeholder="e.g., 2.5"
+                    className="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-white placeholder:text-slate-400 focus:border-primary focus:outline-none"
+                  />
+                  <p className="text-xs text-slate-400 mt-1">Enter hours between 0.5 and 12</p>
+                </div>
+              )}
+
+              {/* Custom Hours Input */}
+              <div className="mt-4">
+                <button
+                  onClick={() => {
+                    setIsCustom(!isCustom)
+                    if (!isCustom) setSelectedHours(0)
+                  }}
+                  className={cn(
+                    'w-full rounded-lg border p-4 text-left transition-all',
+                    isCustom
+                      ? 'border-primary bg-primary/10 text-white'
+                      : 'border-slate-700 bg-slate-800/50 text-slate-300 hover:border-slate-600'
+                  )}
+                >
+                  <div className="font-semibold">Custom Hours</div>
+                  <div className="text-sm text-slate-400">Enter your preferred daily learning hours</div>
+                </button>
+                {isCustom && (
+                  <div className="mt-3">
+                    <input
+                      type="number"
+                      min="0.5"
+                      max="24"
+                      step="0.5"
+                      value={customHours}
+                      onChange={(e) => setCustomHours(e.target.value)}
+                      placeholder="Enter hours (e.g., 1.5)"
+                      className="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-white placeholder:text-slate-500 focus:border-primary/50 focus:outline-none"
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -173,7 +244,7 @@ export default function LearningQuestionnaireModal({
               <Button
                 variant="primary"
                 onClick={handleConfirm}
-                disabled={!selectedProficiency || !selectedHours}
+                disabled={!selectedProficiency || finalHours === 0}
                 className="flex-1"
               >
                 Start Learning Plan

@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Zap, Clock, BookOpen, ChevronRight, Search } from 'lucide-react'
+import { Zap, Clock, BookOpen, Search } from 'lucide-react'
 import Card from '../components/ui/Card'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import SkillDetailModal from '../components/ui/SkillDetailModal'
 import LearningQuestionnaireModal from '../components/ui/LearningQuestionnaireModal'
+import LearningPlanModal from '../components/ui/LearningPlanModal'
 import { api } from '../lib/api'
 import type { CatalogItem } from '../types'
 
@@ -86,6 +87,9 @@ const LearnPage = () => {
   const [selectedCourse, setSelectedCourse] = useState<CatalogItem | null>(null)
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
   const [isQuestionnaireModalOpen, setIsQuestionnaireModalOpen] = useState(false)
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false)
+  const [userProficiency, setUserProficiency] = useState<string>('')
+  const [userHoursPerDay, setUserHoursPerDay] = useState<number>(0)
   const location = useLocation()
   const navigate = useNavigate()
 
@@ -136,19 +140,20 @@ const LearnPage = () => {
     setIsDetailModalOpen(true)
   }
 
-  const handleNextClick = (course: CatalogItem) => {
-    // Mark course details as acknowledged
-    localStorage.setItem(`course-acknowledged-${course.id}`, 'true')
-    setIsDetailModalOpen(false)
-    if (selectedCourse) {
-      navigate(`/lesson/${selectedCourse.id}`)
-    }
+  const handleStartLearnClick = (course: CatalogItem) => {
+    setSelectedCourse(course)
+    setIsDetailModalOpen(true)
   }
 
-  const handleQuestionnaireComplete = (_proficiency: string, _hoursPerDay: number) => {
-    // For now, just navigate to the lesson
-    // In a real app, you might save this data to user preferences
+  const handleQuestionnaireComplete = (proficiency: string, hoursPerDay: number) => {
+    setUserProficiency(proficiency)
+    setUserHoursPerDay(hoursPerDay)
     setIsQuestionnaireModalOpen(false)
+    setIsPlanModalOpen(true)
+  }
+
+  const handleStartLearningFromPlan = () => {
+    setIsPlanModalOpen(false)
     if (selectedCourse) {
       navigate(`/lesson/${selectedCourse.id}`)
     }
@@ -318,27 +323,14 @@ const LearnPage = () => {
                       </div>
 
                       {/* Action Buttons */}
-                      <div className="mt-auto flex gap-2 pt-2">
-                        <Button
-                          variant="secondary"
-                          size="sm"
-                          className="flex-1 text-xs transition-all duration-300"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleCardClick(course)
-                          }}
-                          title="View course details"
-                        >
-                          <span>Details</span>
-                          <ChevronRight className="h-3.5 w-3.5" />
-                        </Button>
+                      <div className="mt-auto pt-2">
                         <Button
                           variant="primary"
                           size="sm"
-                          className="flex-1 text-xs transition-all duration-300"
+                          className="w-full text-xs transition-all duration-300"
                           onClick={(e) => {
                             e.stopPropagation()
-                            handleNextClick(course)
+                            handleStartLearnClick(course)
                           }}
                           title="Start learning this course"
                         >
@@ -379,7 +371,10 @@ const LearnPage = () => {
         course={selectedCourse}
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
-        onNext={handleNextClick}
+        onNext={() => {
+          setIsDetailModalOpen(false)
+          setIsQuestionnaireModalOpen(true)
+        }}
       />
 
       <LearningQuestionnaireModal
@@ -387,6 +382,15 @@ const LearnPage = () => {
         isOpen={isQuestionnaireModalOpen}
         onClose={() => setIsQuestionnaireModalOpen(false)}
         onConfirm={handleQuestionnaireComplete}
+      />
+
+      <LearningPlanModal
+        course={selectedCourse}
+        proficiency={userProficiency}
+        hoursPerDay={userHoursPerDay}
+        isOpen={isPlanModalOpen}
+        onClose={() => setIsPlanModalOpen(false)}
+        onStartLearning={handleStartLearningFromPlan}
       />
     </div>
   )

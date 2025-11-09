@@ -1,5 +1,5 @@
 
-import { X, BookOpen, Target, CheckCircle, Briefcase, Link, FileText, Clock } from 'lucide-react'
+import { X, BookOpen, Target, CheckCircle, Briefcase, Link, FileText, Clock, Zap, TrendingUp, Star, Lightbulb, Award, Brain, Sparkles } from 'lucide-react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { cn } from '../../lib/cn'
 import Badge from './Badge'
@@ -91,10 +91,31 @@ export default function SkillDetailModal({ course, isOpen, onClose, onNext }: Sk
 
             {/* Content */}
             <div className="p-8">
-              <div className="mb-6">
+              <div className="mb-8">
                 <h1 className="mb-2 text-3xl font-bold text-white">{course.title}</h1>
                 <p className="text-lg text-slate-300">{course.description}</p>
               </div>
+
+              {/* Benefits Section */}
+              {course.benefits && course.benefits.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Star className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Key Benefits</h2>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {course.benefits.map((benefit, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start gap-3 rounded-lg border border-slate-700/50 bg-slate-800/30 p-3"
+                      >
+                        <Zap className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-400" />
+                        <span className="text-sm text-slate-300">{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Tags */}
               <div className="mb-8">
@@ -200,6 +221,154 @@ export default function SkillDetailModal({ course, isOpen, onClose, onNext }: Sk
                       </li>
                     ))}
                   </ul>
+                </div>
+              )}
+
+              {/* Benefits */}
+              {course.benefits && course.benefits.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Zap className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Key Benefits</h2>
+                  </div>
+                  <ul className="space-y-2">
+                    {course.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start gap-3 text-slate-300">
+                        <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-400" />
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Importance */}
+              {course.importance && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Star className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Why This Matters</h2>
+                  </div>
+                  <div className="rounded-lg bg-primary/5 border border-primary/30 p-4">
+                    <p className="text-slate-300 leading-relaxed">{course.importance}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Industry Relevance */}
+              {course.industryRelevance && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Industry Relevance</h2>
+                  </div>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="rounded-lg bg-slate-800/30 border border-slate-700 p-4">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Relevance Score</p>
+                      <p className="mt-2 text-3xl font-bold text-primary">{course.industryRelevance.relevanceScore}%</p>
+                    </div>
+                    <div className="rounded-lg bg-slate-800/30 border border-slate-700 p-4">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Salary Impact</p>
+                      <p className="mt-2 text-sm font-semibold text-emerald-400">{course.industryRelevance.salaryImpact}</p>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-sm font-semibold text-slate-300 mb-2">Top Industries:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {course.industryRelevance.topIndustries.map((industry, index) => (
+                        <span key={index} className="inline-block rounded-full bg-primary/10 px-3 py-1.5 text-xs text-primary border border-primary/30">
+                          {industry}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Real World Applications */}
+              {course.realWorldApplications && course.realWorldApplications.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Lightbulb className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Real-World Applications</h2>
+                  </div>
+                  <ul className="space-y-3">
+                    {course.realWorldApplications.map((app, index) => (
+                      <li key={index} className="flex items-start gap-3 rounded-lg bg-slate-800/20 p-3 text-slate-300 border border-slate-700/50">
+                        <div className="mt-0.5 h-2 w-2 flex-shrink-0 rounded-full bg-primary" />
+                        <span>{app}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Key Topics */}
+              {course.keyTopics && course.keyTopics.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <BookOpen className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Key Topics Covered</h2>
+                  </div>
+                  <div className="grid gap-2">
+                    {course.keyTopics.map((topic, index) => (
+                      <div key={index} className="flex items-center gap-2 rounded-lg bg-slate-800/30 p-3 text-slate-300">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/20 text-xs font-semibold text-primary">
+                          ✓
+                        </span>
+                        <span>{topic}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Learning Outcomes */}
+              {course.learningOutcomes && course.learningOutcomes.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Target className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">What You'll Learn</h2>
+                  </div>
+                  <ul className="space-y-2">
+                    {course.learningOutcomes.map((outcome, index) => (
+                      <li key={index} className="flex items-start gap-3 text-slate-300">
+                        <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-blue-400" />
+                        <span>{outcome}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Industry Demand */}
+              {course.industryDemand && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Award className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Industry Demand & Salary Impact</h2>
+                  </div>
+                  <div className="rounded-lg bg-emerald-900/20 border border-emerald-700/30 p-4">
+                    <p className="text-slate-300 leading-relaxed">{course.industryDemand}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Learning Tips */}
+              {course.learningTips && course.learningTips.length > 0 && (
+                <div className="mb-8">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Brain className="h-5 w-5 text-primary" />
+                    <h2 className="text-xl font-semibold text-white">Pro Learning Tips</h2>
+                  </div>
+                  <div className="space-y-3">
+                    {course.learningTips.map((tip, index) => (
+                      <div key={index} className="flex gap-3 rounded-lg bg-slate-800/40 border border-slate-700/50 p-4">
+                        <Sparkles className="mt-1 h-4 w-4 flex-shrink-0 text-yellow-400" />
+                        <span className="text-slate-300">{tip}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

@@ -55,6 +55,8 @@ router.post('/videos', async (req, res) => {
     status: flagged ? 'flagged' : 'pending',
     lessonId: payload.lessonId,
     submittedAt: new Date().toISOString(),
+    topic: payload.lessonId,
+    subtopic: payload.title,
   }
   videos.unshift(video)
   if (flagged) {

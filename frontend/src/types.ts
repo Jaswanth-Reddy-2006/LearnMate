@@ -15,4 +15,16 @@ export type CatalogItem = {
   careerApplications?: string[]
   resources?: string[]
   syllabus?: string[]
+  benefits?: string[]
+  importance?: string
+  industryDemand?: string
+  learningTips?: string[]
+  industryRelevance?: {
+    relevanceScore: number
+    topIndustries: string[]
+    salaryImpact: string
+  }
+  realWorldApplications?: string[]
+  keyTopics?: string[]
+  learningOutcomes?: string[]
 }
